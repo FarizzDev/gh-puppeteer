@@ -33,6 +33,7 @@ puppeteer.use(StealthPlugin());
   );
 
   await page.screenshot({ path: "result/networkidle2.png" });
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   await page.waitForSelector("a#downloadButton", { timeout: 10000 });
 
   // Ambil nama & ukuran file
