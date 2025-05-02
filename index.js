@@ -46,8 +46,11 @@ puppeteer.use(StealthPlugin());
   await page.click("a#downloadButton");
 
   // Tunggu sebentar supaya response ditangkap
-  await page.waitForTimeout(3000);
-
+  if (typeof page.waitForTimeout === "function") {
+    await page.waitForTimeout(3000);
+  } else {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+  }
   if (realDownloadUrl) {
     console.log({
       name: data.name,
