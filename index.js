@@ -35,7 +35,6 @@ const gamertag = "Saiful296"; // ganti dengan nama pemain kamu
     });
 
     console.log("Mengisi form...");
-    await page.focus("input#nickname");
     await page.type("input#nickname", gamertag, { delay: 50 });
     await page.screenshot({ path: "result/2.png", fullPage: true });
 
@@ -64,5 +63,5 @@ const gamertag = "Saiful296"; // ganti dengan nama pemain kamu
 })();
 
 async function delay(time) {
-  await new Promise(async (resolve) => setTimeout(resolve, time));
+  return await new Promise(async (resolve) => setTimeout(resolve, time));
 }
