@@ -18,7 +18,6 @@
   "homepage": "https://github.com/DrFariz/gh-puppeteer#readme",
   "description": "",
   "dependencies": {
-    "chalk": "^5.4.1",
     "puppeteer": "^24.8.0"
   }
 }
