@@ -7,14 +7,18 @@ const gamertag = "Saiful296"; // ganti dengan nama pemain kamu
 (async () => {
   const browser = await puppeteer.launch({
     headless: false, // bisa true kalau udah yakin
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+    ],
   });
 
   const page = await browser.newPage();
 
-  await page.setUserAgent(
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-  );
+  // await page.setUserAgent(
+  //   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  // );
 
   try {
     console.log("Mengakses halaman vote...");
