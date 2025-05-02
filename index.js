@@ -40,8 +40,8 @@ const gamertag = "Saiful296"; // ganti dengan nama pemain kamu
 
     await delay(1021);
 
-    await page.evaluate(() => document.activeElement.blur());
-    await page.focus("input#accept");
+    // await page.evaluate(() => document.activeElement.blur());
+    // await page.focus("input#accept");
     await page.click("input#accept");
     await page.screenshot({ path: "result/3.png", fullPage: true });
 
