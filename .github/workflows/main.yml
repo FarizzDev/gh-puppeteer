@@ -1,10 +1,13 @@
-name: Run Puppeteer
+name: Puppeteer Runner
 
-on: [push]
+on:
+  push:
+    branches: [main]
 
 jobs:
   puppeteer-job:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -17,11 +20,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Puppeteer script
+      - name: Run Puppeteer
         run: node index.js
 
-      - name: Upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: my-artifact
-          path: example.png
+      # - name: Push to screenshots branch
+      #   run: |
+      #     git config --global user.name "github-actions[bot]"
+      #     git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      #
+      #     git checkout --orphan screenshots
+      #     git rm -rf .
+      #     cp example.png ./ # copy file to git repo
+      #
+      #     git add .
+      #     git commit -m "Update screenshot"
+      #     git push --force origin screenshots
