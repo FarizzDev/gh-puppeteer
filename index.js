@@ -46,7 +46,7 @@ const gamertag = "Saiful296"; // ganti dengan nama pemain kamu
     await page.screenshot({ path: "result/3.png", fullPage: true });
 
     // Tunggu redirect atau proses selesai
-    await delay(3000);
+    await delay(15000);
     await page.screenshot({ path: "result/4.png", fullPage: true });
   } catch (err) {
     console.error("Gagal melakukan voting:", err.message);
