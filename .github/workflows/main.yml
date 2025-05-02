@@ -24,16 +24,19 @@ jobs:
         run: node index.js || echo "scraping error"
         continue-on-error: true
 
-      - name: Push to screenshots branch
+      - name: Backup result dan push ke screenshots branch
         if: always()
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+          cp -r result /tmp/screenshots-result
+      
           git checkout --orphan screenshots
           git rm -rf .
-          cp -r result ./ # copy file to git repo
 
+          cp -r /tmp/screenshots-result/* ./
+      
           git add .
           git commit -m "Update screenshot"
           git push --force origin screenshots
