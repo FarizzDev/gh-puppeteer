@@ -39,16 +39,15 @@ const gamertag = "Saiful296"; // ganti dengan nama pemain kamu
     await page.screenshot({ path: "result/3.png", fullPage: true });
 
     // Klik tombol "Vote" yang href-nya `javascript:document.voteform.submit()`
-    console.log("Page exists?", typeof page);
-    console.log("$x exists?", typeof page.$x);
-    console.log(page);
-    const voteButton = await page.$x("//a[contains(text(), 'Vote')]");
-    if (voteButton.length > 0) {
-      await voteButton[0].click();
-      console.log("Tombol vote diklik!");
-    } else {
-      throw new Error('Tombol "Vote" tidak ditemukan!');
-    }
+    // const anchors = await page.$$("a");
+    // for (const anchor of anchors) {
+    //   const text = await page.evaluate((el) => el.innerText, anchor);
+    //   if (text.trim() === "Vote") {
+    //     await anchor.click();
+    //     console.log("Vote button clicked!");
+    //     break;
+    //   }
+    // }
 
     // Tunggu redirect atau proses selesai
     await page.waitForTimeout(5000);
