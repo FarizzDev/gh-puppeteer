@@ -35,14 +35,14 @@ const gamertag = "Saiful296"; // ganti dengan nama pemain kamu
     });
 
     console.log("Mengisi form...");
-    await page.type("input#nickname", gamertag, { delay: 50 });
+    await page.click("input#accept");
     await page.screenshot({ path: "result/2.png", fullPage: true });
 
     await delay(1021);
 
     // await page.evaluate(() => document.activeElement.blur());
     // await page.focus("input#accept");
-    await page.click("input#accept");
+    await page.type("input#nickname", gamertag, { delay: 50 });
     await page.screenshot({ path: "result/3.png", fullPage: true });
 
     // Tunggu redirect atau proses selesai
