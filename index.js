@@ -39,7 +39,7 @@ const gamertag = "Saiful296"; // ganti dengan nama pemain kamu
     await page.screenshot({ path: "result/2.png", fullPage: true });
 
     await page.evaluate(() => document.activeElement.blur());
-    await page.click("label[for='accept']");
+    await page.click("input#accept");
     await page.screenshot({ path: "result/3.png", fullPage: true });
 
     // Tunggu redirect atau proses selesai
