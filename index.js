@@ -5,62 +5,34 @@ puppeteer.use(StealthPlugin());
 (async () => {
   const browser = await puppeteer.launch({
     headless: "new",
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-    ],
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 
   const page = await browser.newPage();
-
-  // Tangkap URL dengan content-type "application/octet-stream"
-  let realDownloadUrl = null;
-  page.on("response", async (response) => {
-    const ct = response.headers()["content-type"];
-    if (ct && ct.includes("application/octet-stream")) {
-      realDownloadUrl = response.url();
-    }
-  });
-
-  page.on("console", (msg) => console.log("PAGE LOG:", msg.text()));
-
-  await page.goto(
-    "https://www.mediafire.com/file/gflgyhpbh3xnktd/LYNEX+V2+[+FREE+]+@PDLZ.zip/file",
-    {
-      waitUntil: "networkidle2",
-    },
+  await page.setUserAgent(
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
   );
 
-  await page.screenshot({ path: "result/networkidle2.png" });
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  await page.waitForSelector("a#downloadButton", { timeout: 10000 });
-
-  // Ambil nama & ukuran file
-  const data = await page.evaluate(() => {
-    const name = document.querySelector(".filename")?.textContent.trim();
-    const size = document.querySelector(".fileInfo")?.textContent.trim();
-    return { name, size };
+  console.log("Mengakses Tokopedia...");
+  await page.goto("https://www.tokopedia.com/search?st=product&q=laptop", {
+    waitUntil: "networkidle2",
+    timeout: 0,
   });
 
-  // Klik tombol download untuk trigger file request
-  await page.click("a#downloadButton");
+  await page.screenshot({ path: "result/1.png" });
+  await page.waitForSelector("div.css-1asz3by"); // container produk
+  await page.screenshot({ path: "result/2.png" });
 
-  // Tunggu sebentar supaya response ditangkap
-  if (typeof page.waitForTimeout === "function") {
-    await page.waitForTimeout(3000);
-  } else {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-  }
-  if (realDownloadUrl) {
-    console.log({
-      name: data.name,
-      size: data.size,
-      download: realDownloadUrl,
+  const data = await page.evaluate(() => {
+    const items = document.querySelectorAll("div.css-1asz3by");
+    return Array.from(items).map((el) => {
+      const title =
+        el.querySelector("div.css-1b6t4dn")?.innerText || "No Title";
+      const price = el.querySelector("div.css-rhd610")?.innerText || "No Price";
+      return { title, price };
     });
-  } else {
-    console.log("Gagal deteksi URL file download.");
-  }
+  });
 
+  console.log("Produk ditemukan:", data.slice(0, 5)); // Tampilkan 5 pertama
   await browser.close();
 })();
