@@ -21,9 +21,11 @@ jobs:
         run: npm install
 
       - name: Run Puppeteer
-        run: node index.js
+        run: node index.js || echo "scraping error"
+        continue-on-error: true
 
       - name: Push to screenshots branch
+        if: always()
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
