@@ -27,16 +27,16 @@ const gamertag = "Saiful296"; // ganti dengan nama pemain kamu
       timeout: 60000,
     });
 
-    await page.screenshoot({ path: "result/1.png" });
+    await page.screenshot({ path: "result/1.png" });
     // Tunggu elemen form muncul
     await page.waitForSelector("input#nickname");
 
     console.log("Mengisi form...");
     await page.type("#nickname", gamertag, { delay: 50 });
-    await page.screenshoot({ path: "result/2.png" });
+    await page.screenshot({ path: "result/2.png" });
 
     await page.click("input#accept");
-    await page.screenshoot({ path: "result/3.png" });
+    await page.screenshot({ path: "result/3.png" });
 
     // Klik tombol "Vote" yang href-nya `javascript:document.voteform.submit()`
     const voteButton = await page.$x("//a[contains(text(), 'Vote')]");
@@ -49,7 +49,7 @@ const gamertag = "Saiful296"; // ganti dengan nama pemain kamu
 
     // Tunggu redirect atau proses selesai
     await page.waitForTimeout(5000);
-    await page.screenshoot({ path: "result/4.png" });
+    await page.screenshot({ path: "result/4.png" });
   } catch (err) {
     console.error("Gagal melakukan voting:", err.message);
   } finally {
