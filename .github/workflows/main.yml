@@ -23,15 +23,15 @@ jobs:
       - name: Run Puppeteer
         run: node index.js
 
-      # - name: Push to screenshots branch
-      #   run: |
-      #     git config --global user.name "github-actions[bot]"
-      #     git config --global user.email "github-actions[bot]@users.noreply.github.com"
-      #
-      #     git checkout --orphan screenshots
-      #     git rm -rf .
-      #     cp example.png ./ # copy file to git repo
-      #
-      #     git add .
-      #     git commit -m "Update screenshot"
-      #     git push --force origin screenshots
+      - name: Push to screenshots branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git checkout --orphan screenshots
+          git rm -rf .
+          cp -r result ./ # copy file to git repo
+
+          git add .
+          git commit -m "Update screenshot"
+          git push --force origin screenshots
