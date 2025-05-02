@@ -1,0 +1,24 @@
+{
+  "name": "gh-puppeteer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DrFariz/gh-puppeteer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DrFariz/gh-puppeteer/issues"
+  },
+  "homepage": "https://github.com/DrFariz/gh-puppeteer#readme",
+  "description": "",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "puppeteer": "^24.8.0"
+  }
+}
