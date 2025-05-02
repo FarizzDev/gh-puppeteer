@@ -34,6 +34,7 @@ jobs:
       
           git checkout --orphan screenshots
           git rm -rf .
+          git clean -fdx
 
           cp -r /tmp/screenshots-result/* ./
       
