@@ -39,9 +39,15 @@ const gamertag = "Saiful296"; // ganti dengan nama pemain kamu
     await page.type("input#nickname", gamertag, { delay: 50 });
     await page.screenshot({ path: "result/2.png", fullPage: true });
 
-    await page.click("input#accept");
+    await delay(1234);
+    await page.click("label[for='accept']");
     await page.screenshot({ path: "result/3.png", fullPage: true });
 
+    // Tunggu redirect atau proses selesai
+    await delay(3000);
+    await page.screenshot({ path: "result/4.png", fullPage: true });
+  } catch (err) {
+    console.error("Gagal melakukan voting:", err.message);
     // Klik tombol "Vote" yang href-nya `javascript:document.voteform.submit()`
     // const anchors = await page.$$("a");
     // for (const anchor of anchors) {
@@ -52,13 +58,11 @@ const gamertag = "Saiful296"; // ganti dengan nama pemain kamu
     //     break;
     //   }
     // }
-
-    // Tunggu redirect atau proses selesai
-    await new Promise(async (resolve) => setTimeout(resolve, 3000));
-    await page.screenshot({ path: "result/4.png", fullPage: true });
-  } catch (err) {
-    console.error("Gagal melakukan voting:", err.message);
   } finally {
     await browser.close();
   }
 })();
+
+async function delay(time) {
+  await new Promise(async (resolve) => setTimeout(resolve, time));
+}
