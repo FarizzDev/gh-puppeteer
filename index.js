@@ -77,7 +77,7 @@ puppeteer.use(StealthPlugin());
   // }
 
   await browser.close();
-  const response = axios.get(data.downloadUrl, {
+  const response = await axios.get(data.downloadUrl, {
     responseType: "stream",
     headers: {
       Cookie: cookieHeader,
