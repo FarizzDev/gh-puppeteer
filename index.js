@@ -85,7 +85,7 @@ puppeteer.use(StealthPlugin());
     },
   });
   const chunks = [];
-  for (let chunk in response.data) {
+  for await (const chunk of response.data) {
     chunks.push(chunk);
   }
   const buffer = Buffer.concat(chunks);
@@ -93,5 +93,5 @@ puppeteer.use(StealthPlugin());
   fs.writeFileSync("./result/LYNEXBUFFER.zip", buffer);
   // console.log("MIMETYPE:", response.headers["content-type"]);
   // const writer = fs.createWriteStream("./result/LYNEX.zip");
-  response.data.pipe(writer);
+  // response.data.pipe(writer);
 })();
