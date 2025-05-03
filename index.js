@@ -48,7 +48,10 @@ puppeteer.use(StealthPlugin());
     return { name, size, downloadUrl };
   });
 
-  console.log({ data }, "\n\n");
+  const cookies = await page.cookies();
+  const cookieHeader = cookies.map((c) => `${c.name}=${c.value}`).join("; ");
+
+  console.log({ data, cookieHeader }, "\n\n");
 
   // Klik tombol download untuk trigger file request
   // await page.click("a#downloadButton");
