@@ -2,11 +2,9 @@ const puppeteer = require("puppeteer-extra");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
 
-const gamertag = "Saiful296"; // ganti dengan nama pemain kamu
-
 (async () => {
   const browser = await puppeteer.launch({
-    headless: "new", // bisa true kalau udah yakin
+    headless: "new",
     args: [
       "--no-sandbox",
       "--disable-setuid-sandbox",
@@ -16,55 +14,58 @@ const gamertag = "Saiful296"; // ganti dengan nama pemain kamu
 
   const page = await browser.newPage();
 
-  await page.setUserAgent(
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  // Tangkap URL dengan content-type "application/octet-stream"
+  let realDownloadUrl = null;
+  page.on("response", async (response) => {
+    const ct = response.headers()["content-type"];
+    if (ct && ct.includes("application/octet-stream")) {
+      realDownloadUrl = response.url();
+    }
+  });
+
+  page.on("console", (msg) => console.log("PAGE LOG:", msg.text()));
+
+  await page.goto(
+    "https://www.mediafire.com/file/gflgyhpbh3xnktd/LYNEX+V2+[+FREE+]+@PDLZ.zip/file",
+    {
+      waitUntil: "networkidle2",
+    },
   );
 
-  try {
-    console.log("Mengakses halaman vote...");
-    await page.goto("https://minecraftpocket-servers.com/server/130754/vote/", {
-      waitUntil: "domcontentloaded",
-      timeout: 60000,
-    });
+  await page.screenshot({ path: "result/networkidle2.png" });
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  await page.waitForSelector("a#downloadButton", { timeout: 10000 });
+  await page.screenshot({ path: "result/readytoclick.png", fullPage: true });
 
-    await page.screenshot({ path: "result/1.png", fullPage: true });
-    // Tunggu elemen form muncul
-    await page.waitForSelector("input#nickname", {
-      visible: true,
-      timeout: 10000,
-    });
+  // Ambil nama & ukuran file
+  const data = await page.evaluate(() => {
+    const name = document.querySelector(".filename")?.textContent.trim();
+    const size = document.querySelector(".fileInfo")?.textContent.trim();
+    return { name, size };
+  });
 
-    console.log("Mengisi form...");
-    await page.click("input#accept");
-    await page.screenshot({ path: "result/2.png", fullPage: true });
+  console.log({data})
 
-    await delay(1021);
+  // Klik tombol download untuk trigger file request
+  await page.click("a#downloadButton");
+  await page.screenshot({ path: "result/clicked.png", fullPage: true });
 
-    // await page.evaluate(() => document.activeElement.blur());
-    // await page.focus("input#accept");
-    await page.type("input#nickname", gamertag, { delay: 50 });
-    await page.screenshot({ path: "result/3.png", fullPage: true });
-
-    // Tunggu redirect atau proses selesai
-    await delay(60_000);
-    await page.screenshot({ path: "result/4.png", fullPage: true });
-  } catch (err) {
-    console.error("Gagal melakukan voting:", err.message);
-    // Klik tombol "Vote" yang href-nya `javascript:document.voteform.submit()`
-    // const anchors = await page.$$("a");
-    // for (const anchor of anchors) {
-    //   const text = await page.evaluate((el) => el.innerText, anchor);
-    //   if (text.trim() === "Vote") {
-    //     await anchor.click();
-    //     console.log("Vote button clicked!");
-    //     break;
-    //   }
-    // }
-  } finally {
-    await browser.close();
+  // Tunggu sebentar supaya response ditangkap
+  if (typeof page.waitForTimeout === "function") {
+    await page.waitForTimeout(3000);
+  } else {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
   }
-})();
+  await page.screenshot({ path: "result/afterClick.png", fullPage: true });
+  if (realDownloadUrl) {
+    console.log({
+      name: data.name,
+      size: data.size,
+      download: realDownloadUrl,
+    });
+  } else {
+    console.log("Gagal deteksi URL file download.");
+  }
 
-async function delay(time) {
-  return await new Promise(async (resolve) => setTimeout(resolve, time));
-}
+  await browser.close();
+})();
