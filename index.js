@@ -1,4 +1,6 @@
+const fs = require("fs");
 const puppeteer = require("puppeteer-extra");
+const axios = require("axios");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
 
@@ -75,4 +77,14 @@ puppeteer.use(StealthPlugin());
   }
 
   await browser.close();
+  const response = axios.get(data.downloadUrl, {
+    responseType: "stream",
+    headers: {
+      Cookie: cookieHeader,
+      "User-Agent": "Mozilla/5.0",
+    },
+  });
+  console.log("MIMETYPE:", response.headers["content-type"]);
+  const writer = fs.createWriteStream("./result/LYNEX.zip");
+  response.data.pipe(writer);
 })();
