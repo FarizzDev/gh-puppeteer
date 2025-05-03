@@ -84,7 +84,14 @@ puppeteer.use(StealthPlugin());
       "User-Agent": "Mozilla/5.0",
     },
   });
-  console.log("MIMETYPE:", response.headers["content-type"]);
-  const writer = fs.createWriteStream("./result/LYNEX.zip");
+  const chunks = [];
+  for (let chunk in response.data) {
+    chunks.push(chunk);
+  }
+  const buffer = Buffer.concat(chunks);
+  console.log("FILE SIZE:", buffer.length);
+  fs.writeFileSync("./result/LYNEXBUFFER.zip", buffer);
+  // console.log("MIMETYPE:", response.headers["content-type"]);
+  // const writer = fs.createWriteStream("./result/LYNEX.zip");
   response.data.pipe(writer);
 })();
