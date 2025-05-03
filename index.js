@@ -66,15 +66,15 @@ puppeteer.use(StealthPlugin());
     await new Promise((resolve) => setTimeout(resolve, 3000));
   }
   await page.screenshot({ path: "result/afterClick.png", fullPage: true });
-  if (realDownloadUrl) {
-    console.log({
-      name: data.name,
-      size: data.size,
-      download: realDownloadUrl,
-    });
-  } else {
-    console.log("Gagal deteksi URL file download.");
-  }
+  // if (realDownloadUrl) {
+  //   console.log({
+  //     name: data.name,
+  //     size: data.size,
+  //     download: realDownloadUrl,
+  //   });
+  // } else {
+  //   console.log("Gagal deteksi URL file download.");
+  // }
 
   await browser.close();
   const response = axios.get(data.downloadUrl, {
