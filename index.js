@@ -31,7 +31,7 @@ puppeteer.use(StealthPlugin());
       waitUntil: "networkidle2",
     },
   );
-
+  "Download (10.6KB)".match(/[([\d.]+)([KMGT]?B)]/)
   await page.screenshot({ path: "result/networkidle2.png" });
   await new Promise((resolve) => setTimeout(resolve, 3000));
   await page.waitForSelector("a#downloadButton", { timeout: 10000 });
@@ -40,11 +40,11 @@ puppeteer.use(StealthPlugin());
   // Ambil nama & ukuran file
   const data = await page.evaluate(() => {
     const name = document.querySelector(".filename")?.textContent.trim();
-    const size = document.querySelector(".fileInfo")?.textContent.trim();
+    const size = document.querySelector("a#downloadButton")?.textContent.match(/([\d.]+)([KMGT]?B)/)[0].trim();
     return { name, size };
   });
 
-  console.log({data})
+  console.log({data}, "\n\n")
 
   // Klik tombol download untuk trigger file request
   await page.click("a#downloadButton");
