@@ -16,12 +16,12 @@ puppeteer.use(StealthPlugin());
 
   // Tangkap URL dengan content-type "application/octet-stream"
   let realDownloadUrl = null;
-  page.on("response", async (response) => {
-    const ct = response.headers()["content-type"];
-    if (ct && ct.includes("application/octet-stream")) {
-      realDownloadUrl = response.url();
-    }
-  });
+  // page.on("response", async (response) => {
+  //   const ct = response.headers()["content-type"];
+  //   if (ct && ct.includes("application/octet-stream")) {
+  //     realDownloadUrl = response.url();
+  //   }
+  // });
 
   page.on("console", (msg) => console.log("PAGE LOG:", msg.text()));
 
@@ -39,19 +39,20 @@ puppeteer.use(StealthPlugin());
 
   // Ambil nama & ukuran file
   const data = await page.evaluate(() => {
+    const downloadButton = document.querySelector("a#downloadButton");
     const name = document.querySelector(".filename")?.textContent.trim();
-    const size = document
-      .querySelector("a#downloadButton")
-      ?.textContent.match(/([\d.]+)([KMGT]?B)/)[0]
+    const size = downloadButton?.textContent
+      .match(/([\d.]+)([KMGT]?B)/)[0]
       .trim();
-    return { name, size };
+    const downloadUrl = downloadButton?.getAttribute("href");
+    return { name, size, downloadUrl };
   });
 
   console.log({ data }, "\n\n");
 
   // Klik tombol download untuk trigger file request
-  await page.click("a#downloadButton");
-  await page.screenshot({ path: "result/clicked.png", fullPage: true });
+  // await page.click("a#downloadButton");
+  // await page.screenshot({ path: "result/clicked.png", fullPage: true });
 
   // Tunggu sebentar supaya response ditangkap
   if (typeof page.waitForTimeout === "function") {
