@@ -21,16 +21,21 @@ jobs:
           sudo apt-get install -y libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2t64
           npm install puppeteer
 
-      - name: Start VNC server
-        env:
-          VNC_PASSWORD: ${{ secrets.VNC_PASSWORD }}
+      - name: Set up VNC xstartup with Fluxbox
         run: |
           mkdir -p ~/.vnc
-          echo "$VNC_PASSWORD" | vncpasswd -f > ~/.vnc/passwd
+          echo "${{ secrets.VNC_PASSWORD }}" | vncpasswd -f > ~/.vnc/passwd
           chmod 600 ~/.vnc/passwd
+          echo "#!/bin/sh" > ~/.vnc/xstartup
+          echo "export XKL_XMODMAP_DISABLE=1" >> ~/.vnc/xstartup
+          echo "unset SESSION_MANAGER" >> ~/.vnc/xstartup
+          echo "unset DBUS_SESSION_BUS_ADDRESS" >> ~/.vnc/xstartup
+          echo "exec startfluxbox" >> ~/.vnc/xstartup
+          chmod +x ~/.vnc/xstartup
+
+      - name: Start VNC server
+        run: |
           vncserver :1 -geometry 1280x720 -depth 24
-          export DISPLAY=:1
-          fluxbox &
 
       - name: Clone and run noVNC
         run: |
