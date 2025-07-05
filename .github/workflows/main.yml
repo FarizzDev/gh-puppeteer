@@ -1,8 +1,7 @@
 name: Puppeteer Runner
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   puppeteer-job:
@@ -15,7 +14,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install dependencies
         run: npm install
@@ -31,13 +30,13 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
           cp -r result /tmp/screenshots-result
-      
+
           git checkout --orphan screenshots
           git rm -rf .
           git clean -fdx
 
           cp -r /tmp/screenshots-result/* ./
-      
+
           git add .
           git commit -m "Update screenshot"
           git push --force origin screenshots
