@@ -1,6 +1,8 @@
 name: Puppeteer GUI with noVNC + cloudflared
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -16,7 +18,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y x11vnc xvfb fluxbox wget git curl tigervnc-standalone-server
-          sudo apt-get install -y libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2
+          sudo apt-get install -y libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2t64
           npm install puppeteer
 
       - name: Start VNC server
